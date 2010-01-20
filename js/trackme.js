@@ -1,7 +1,7 @@
 var TrackMe = Class.create({
     options: {
         pageIdMetaTagName: "page_id",                   // name of the meta tag to grab the page id from
-        regions: "#main, #sidebar, #header, #footer",   // selector that defines which regions to use
+        regions: "#main, #sidebar, #header, #footer",   // selector that defines which regions to include in the tracking id
         articleIdRegex: "^article_",                    // regex used to test for closest article_id
         anchorClicked: function(trackingId) {           // this function is called when an anchor is clicked (the tracking id is passed through)
             pageTracker._trackPageview(trackingId);
@@ -113,6 +113,7 @@ var TrackMe = Class.create({
 });
 
 TrackMe.PageViewTypes = [
-    { name: "video",    regex: "^.+\.((flv)|(mov)|(mpg))$" },
-    { name: "document", regex: "^.+\.((pdf)|(doc))$" }
+    { name: "video",    regex: "^.+\.((flv)|(moo?v)|(mpe?g))$" },
+    { name: "document", regex: "^.+\.((pdf)|(doc)|(txt)|(rtf))$" },
+    { name: "image",    regex: "^.+\.((png)|(jpe?g)|(gif)|(bmp)|(tiff?))$" }
 ];
