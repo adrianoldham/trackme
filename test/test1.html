@@ -18,20 +18,20 @@
     </div>
     <div id="sidebar">
         <div id="article_1">
-            <a href="test.mov" title="Test Movie - + *#~">Test Movie</a>
+            <a class="trackme" href="test.mov" title="Test Movie - + *#~">Test Movie</a>
         </div>
         <div id="article_2">
-            <a href="test.flv" title="Test Movie 2">Test Movie 2</a>
+            <a class="trackme" href="test.flv" title="Test Movie 2">Test Movie 2</a>
         </div>
     </div>
     <div id="header">
         <div>
             <div>
                 <ul>
-                    <li><a href="test.doc" title="Test Document">Test Document with no article</a></li>
-                    <li><a href="test.pdf" title="Test PDF">Test PDF</a></li>
-                    <li><a href="test.jpg" title="Test JPEG">Test JPEG</a></li>
-                    <li><a href="test.doc">Test with no title</a></li>
+                    <li><a class="trackme" href="test.doc" title="Test Document">Test Document with no article</a></li>
+                    <li><a class="trackme" href="test.pdf" title="Test PDF">Test PDF</a></li>
+                    <li><a class="trackme" href="test.jpg" title="Test JPEG">Test JPEG</a></li>
+                    <li><a class="trackme" href="test.doc">Test with no title</a></li>
                     <li title="I have no anchor" class="trackme">Test with no anchor</li>
                 </ul>
             </div>
@@ -41,14 +41,36 @@
     <input type="submit" value="Go" title="Submit" />
     </div>
     <ul>
-        <li><a href="test.doc" title="Test Document without region or article">Test Document without region or article</a></li>
+        <li><a class="trackme" href="test.doc" title="Test Document without region or article">Test Document without region or article</a></li>
+    </ul>
+    
+    <ul>
+        <li><a class="external" href="http://www.trackme.com/lazylinktracking.html">Testing link exclusion</li>
+        <li><a class="external" href="http://www.google.com/lazylinktracking.html">Testing link text as tracking id <span>test span</span></a></li>
+        <li><a class="external" href="http://www.google.com/lazylinktracking.html" title="This is the title">Testing title as tracking id</a></li>
+        <li>
+            <a class="external" href="http://www.google.com/lazylinktracking.html"><img src="http://t3.gstatic.com/images?q=tbn:fx5XCMopE2rwVM:http://www.trackme.biz/trackme.gif" /></a>
+            This image means the tracking will use the href for tracking id.
+        </li>        
     </ul>
 
     <script type="text/javascript" charset="utf-8">
         function runTest() {
-            new TrackMe('a[title], .trackme, input[type=submit]', { anchorClicked: function(trackingId) {
+            new TrackMe('a.trackme[title], .trackme, input[type=submit]', { anchorClicked: function(trackingId) {
                 alert(trackingId); // this is a test with no google analytics on the page, so we override the anchorClicked with a test function
+                event.stop();
             }});
+            
+            // Lazy tracking mode, if hrefRegexes is defined and the array isn't empty, lazy mode is on (so smart tracking is off)
+            new TrackMe('a.external', { 
+                anchorClicked: function(trackingId, event) {
+                    alert(trackingId);
+                    event.stop();
+                },
+                hrefRegexes: [
+                    "^.+\.(trackme.com)"
+                ]
+            });
         }
 
         Event.observe(window, "load", runTest);
